@@ -30,7 +30,7 @@ RUN set -eux; \
   tar -xzf /tmp/mediamtx.tgz -C /opt/mediamtx; \
   rm /tmp/mediamtx.tgz; \
   chmod +x /opt/mediamtx/mediamtx
-
+ 
 WORKDIR /app
 COPY app/ /app/
 
