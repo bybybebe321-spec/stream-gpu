@@ -34,7 +34,10 @@ WORKDIR /app
 COPY app/ /app/
 
 RUN npm install
-RUN chmod +x /app/*.sh
+
+# безопасный chmod
+RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
+
 
 EXPOSE 8888 7070 1935
 
