@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fontconfig fonts-dejavu-core \
     libnss3 libatk-bridge2.0-0 libgtk-3-0 libgbm1 libxss1 libxshmfence1 libdrm2 \
     && rm -rf /var/lib/apt/lists/*
-
+ 
 # Node.js
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get update && apt-get install -y --no-install-recommends nodejs \
