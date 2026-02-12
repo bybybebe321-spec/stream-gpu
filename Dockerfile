@@ -40,6 +40,6 @@ RUN npm install
 RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
 
-EXPOSE 8888 7070 1935
+EXPOSE 8080 8888 7070 1935
 
 ENTRYPOINT ["/app/entrypoint.sh"]
