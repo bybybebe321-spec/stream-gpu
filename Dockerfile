@@ -4,6 +4,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DISPLAY=:99 \
     XDG_RUNTIME_DIR=/tmp/xdg
 
+# Base packages
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates curl wget gnupg unzip jq \
     xvfb x11-utils xdotool \
@@ -12,13 +13,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium-browser \
     ffmpeg \
     nginx \
+    socat \
     fontconfig fonts-dejavu-core \
     libnss3 libatk-bridge2.0-0 libgtk-3-0 libgbm1 libxss1 libxshmfence1 libdrm2 \
     && rm -rf /var/lib/apt/lists/*
- 
-# Node.js
+
+# Node.js 20
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
-    && apt-get update && apt-get install -y --no-install-recommends nodejs \
+    && apt-get update \
+    && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
 
 # MediaMTX
@@ -30,16 +33,21 @@ RUN set -eux; \
   tar -xzf /tmp/mediamtx.tgz -C /opt/mediamtx; \
   rm /tmp/mediamtx.tgz; \
   chmod +x /opt/mediamtx/mediamtx
- 
+
+# App
 WORKDIR /app
 COPY app/ /app/
 
 RUN npm install
 
-# безопасный chmod
+# chmod только для sh
 RUN find /app -type f -name "*.sh" -exec chmod +x {} \;
 
-
+# Ports:
+# 8080 — nginx (IPv4 внутри)
+# 8888 — MediaMTX
+# 7070 — control/api
+# 1935 — RTMP
 EXPOSE 8080 8888 7070 1935
 
 ENTRYPOINT ["/app/entrypoint.sh"]
